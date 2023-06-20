@@ -32,23 +32,20 @@
 
     <div id="associations">
       <div v-for="item in associations">
-        <a v-if="item.numAssoc > 1" v-bind:href="'list.html?cards=' + item.cardIds.join(',')">
-          <button type="button" class="btn btn-primary">
+          <button type="button" class="btn btn-primary" v-on:click="openAssociates(item)">
             {{item.associate}}<span class="badge bg-secondary">{{item.numAssoc}}</span>
-          </button>  
-        </a>
-        <a v-else v-bind:href="'card.html?card=' + item.cardIds[0]">
-          <button type="button" class="btn btn-primary">
-            {{item.associate}}<span class="badge bg-secondary">{{item.numAssoc}}</span>
-          </button>  
-        </a>
+          </button>
       </div>
-
+      <a v-bind:href="'editassoc.html?card=' + id">
+        <button type="button" class="btn btn-outline-primary">
+          新しい関連を追加
+        </button>  
+      </a>
     </div>
-    <button type="button" class="btn btn-outline-primary">+</button>
+
     <hr/>
     <div>
-      <a v-bind:href="'editcard.html?card=' + cardId">
+      <a v-bind:href="'editcard.html?card=' + id">
         <button type="button" class="btn btn-outline-primary">編集</button>
       </a>
       <button type="button" class="btn btn-outline-danger" v-on:click="deleteCard">削除</button>
@@ -108,6 +105,13 @@
             localStorage.setItem("associates", JSON.stringify(newLinks));
             alert("削除しました");
             location = "list.html";
+          }
+        },
+        openAssociates(item) {
+          if(item.numAssoc > 1) {
+            location = "list.html?cards=" + item.cardIds.join(',');
+          } else {
+            location = "card.html?card=" + item.cardIds[0];
           }
         }
       }
