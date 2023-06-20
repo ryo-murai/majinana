@@ -31,11 +31,18 @@
     </div>
 
     <div id="associations">
-      <div v-for="item in associations">
+      <div v-for="item in associations" class="btn-group">
           <button type="button" class="btn btn-primary" v-on:click="openAssociates(item)">
             {{item.associate}}<span class="badge bg-secondary">{{item.numAssoc}}</span>
           </button>
-      </div>
+          <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="visually-hidden">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" v-bind:href="'editassoc.html?card=' + id + '&type=' + item.associate">関連先を追加</a></li>
+            <li><a class="dropdown-item" v-on:click="deleteAssociates" href="#">関連をクリア</a></li>
+          </ul>
+        </div>
       <a v-bind:href="'editassoc.html?card=' + id">
         <button type="button" class="btn btn-outline-primary">
           新しい関連を追加
@@ -113,6 +120,10 @@
           } else {
             location = "card.html?card=" + item.cardIds[0];
           }
+        },
+        deleteAssociates(item) {
+          alert("サポートされていませんごめんなさい");
+          // todo: implement
         }
       }
     }).mount('#app');
