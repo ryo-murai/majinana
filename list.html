@@ -14,7 +14,7 @@
     <div class="list-group" v-for="card in cards">
       <a v-bind:href="'card.html?card=' + card.id" class="list-group-item list-group-item-action">{{card.name}}</a>
     </div>
-    <div>
+    <div v-if="acceptAddCard">
       <a href="editcard.html">
         <button type="button" class="btn btn-outline-primary">単語を追加</button>
       </a>
@@ -42,7 +42,7 @@
 
     Vue.createApp({
     data: function() {
-      return {"cards": cards}
+      return {"cards": cards, "acceptAddCard": cardIds ? false : true}
     }
   }).mount('#app')
     </script>
