@@ -15,24 +15,24 @@
     <form v-on:submit.prevent="submit">
       <div class="mb-3">
         <label for="exampleInputType" class="form-label">分類</label>
-        <input type="text" class="form-control" id="inputType" aria-describedby="typeHelp" v-model="type">
+        <input type="text" class="form-control" id="inputType" aria-describedby="typeHelp" v-model="card.type" required>
         <div id="typeHelp" class="form-text"></div>
       </div>
       <div class="mb-3">
         <label for="exampleInputName" class="form-label">名前</label>
-        <input type="text" class="form-control" id="inputName" aria-describedby="nameHelp" v-model="name">
+        <input type="text" class="form-control" id="inputName" aria-describedby="nameHelp" v-model="card.name" required>
         <div id="nameHelp" class="form-text"></div>
       </div>
       <div class="mb-3">
         <label for="exampleFormControlTextarea1" class="form-label">説明</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model="explanation"></textarea>
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model="card.explanation"></textarea>
       </div>
 
       <div id="accosiations">
         
 
       </div>
-      <button type="submit" class="btn btn-primary">更新</button>
+      <button type="submit" class="btn btn-primary">{{submitLabel}}</button>
       <button type="button" class="btn btn-secondary" onclick="history.back();">戻る</button>
     </form>
 
@@ -53,13 +53,29 @@
     var param = new URL(location).searchParams;
     var cardId = param.get("card");
     console.log(cardId);
-    
+
+    card = cardId ? cards[cardId] : {type: "", name: "", explanation: ""};
+
+    // hashcode 
+    const hashCode = s => s.split('').reduce((a,b) => (((a << 5) - a) + b.charCodeAt(0))|0, 0)
+
     Vue.createApp({
       data: function() {
-        return cards[cardId];
+        return {
+          "card": card,
+          "submitLabel": cardId ? "更新" : "追加"
+        };
       },
       methods: {
         submit() {
+          console.log(this.card)
+          if (!cardId) {
+            // todo: check duplication
+            cardId = hashCode(this.card.name).toString();
+            this.card["id"] = cardId;
+            cards[cardId] = this.card;
+          }
+
           localStorage.setItem("cards", JSON.stringify(cards));
           location = `card.html?card=${cardId}`;
         }
