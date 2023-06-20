@@ -11,8 +11,9 @@
     <title>Card</title>
   </head>
   <body id="app">
-    <span id="card-type" class="badge bg-primary">{{type}}</span>
-    <h1 id="card-name">{{name}}</h1>
+    
+    <span class="badge bg-primary text-wrap" style="width: 6rem;">{{type}}</span>
+    <h1>{{name}}</h1>
 
     <div class="accordion" id="accordionExample">
       <div class="accordion-item">
@@ -50,6 +51,7 @@
       <a v-bind:href="'editcard.html?card=' + cardId">
         <button type="button" class="btn btn-outline-primary">編集</button>
       </a>
+      <button type="button" class="btn btn-outline-danger" v-on:click="deleteCard">削除</button>
     </div>
 
     <!-- Optional JavaScript; choose one of the two! -->
@@ -94,8 +96,22 @@
     Vue.createApp({
       data: function() {
         return Object.assign(cards[cardId], {"associations": mapping.values(), "cardId": cardId})
+      },
+      methods: {
+        deleteCard() {
+          const msg1 = "削除してよろしいですか？他の単語との関連も全て消えます";
+          const msg2 = "本当に本当によろしいですか？";
+          if (confirm(msg1) && confirm(msg2)) {
+            var newLinks = associates.filter(a => a.src != cardId && a.dst != cardId);
+            delete cards[cardId];
+            localStorage.setItem("cards", JSON.stringify(cards));
+            localStorage.setItem("associates", JSON.stringify(newLinks));
+            alert("削除しました");
+            location = "list.html";
+          }
+        }
       }
-    }).mount('#app')
+    }).mount('#app');
     </script>
   </body>
 </html>

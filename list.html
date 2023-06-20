@@ -14,6 +14,7 @@
     <div class="list-group" v-for="card in cards">
       <a v-bind:href="'card.html?card=' + card.id" class="list-group-item list-group-item-action">{{card.name}}</a>
     </div>
+    <button type="button" class="btn btn-outline-primary">単語を追加</button>
 
     <!-- Optional JavaScript; choose one of the two! -->
 
@@ -33,8 +34,7 @@
     console.log(param);
     var cardIds = param.get("cards");
 
-    var cards = cardIds.split(",")
-      .map(id => cards[id])
+    var cards = cardIds ? cardIds.split(",").map(id => cards[id]) : Object.values(cards);
 
     Vue.createApp({
     data: function() {
