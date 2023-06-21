@@ -127,7 +127,7 @@
         submit() {
           console.log(this.newCard)
           // todo: check duplication
-          newCardId = hashCode(this.card.name).toString();
+          newCardId = hashCode(this.newCard.name).toString();
           cards[newCardId] = Object.assign(this.newCard, {id: newCardId});
 
           newAssociates = [...associates, {src: cardId, dst: newCardId}]
