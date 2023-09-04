@@ -127,7 +127,7 @@
           }
         },
         deleteAssociates(item) {
-          const msg1 = `削除してよろしいですか？ ${item.numAssoc}個の関連が消えます`;
+          const msg1 = `「${item.associate}」の関連をクリアしてよろしいですか？\n ${item.numAssoc}個の関連がクリアされます（単語自体は消えません）`;
           const msg2 = "本当に本当によろしいですか？";
           if (confirm(msg1) && confirm(msg2)) {
             var newLinks = associates.filter(
