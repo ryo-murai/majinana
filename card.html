@@ -40,7 +40,7 @@
           </button>
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" v-bind:href="'editassoc.html?card=' + id + '&type=' + item.associate">関連先を追加</a></li>
-            <li><a class="dropdown-item" v-on:click="deleteAssociates" href="#">関連をクリア</a></li>
+            <li><a class="dropdown-item" v-on:click="deleteAssociates(item)" href="#">関連をクリア</a></li>
           </ul>
         </div>
       <a v-bind:href="'editassoc.html?card=' + id">
@@ -127,8 +127,16 @@
           }
         },
         deleteAssociates(item) {
-          alert("サポートされていませんごめんなさい");
-          // todo: implement
+          const msg1 = `削除してよろしいですか？ ${item.numAssoc}個の関連が消えます`;
+          const msg2 = "本当に本当によろしいですか？";
+          if (confirm(msg1) && confirm(msg2)) {
+            var newLinks = associates.filter(
+              a => !(a.src == cardId && item.cardIds.includes(a.dst) ||
+                     a.dst == cardId && item.cardIds.includes(a.src)));
+            localStorage.setItem("associates", JSON.stringify(newLinks));
+            alert("削除しました");
+            location.reload();
+          }
         }
       }
     }).mount('#app');
